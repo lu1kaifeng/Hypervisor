@@ -33,7 +33,6 @@ public class SubjectService {
         this.faceService = faceService;
         this.distanceCalc = distanceCalc;
         this.threshold = Double.parseDouble(Objects.requireNonNull(env.getProperty("distance.threshold")));
-        ;
     }
 
     public Optional<Subject> getSubject(Long id) {
