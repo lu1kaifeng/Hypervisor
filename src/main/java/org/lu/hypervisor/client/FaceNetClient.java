@@ -7,4 +7,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 public interface FaceNetClient {
     @PostMapping(value = "/faceNet", produces = "application/json")
     double[] fetchFaceVector(String faceImgBase64);
+
+    @PostMapping(value = "/faces/rgb")
+    String[] facesExtractionRGB(String inputImageBase64);
+
+    @PostMapping(value = "/faces/mono")
+    String[] facesExtractionMono(String inputImageBase64);
 }
