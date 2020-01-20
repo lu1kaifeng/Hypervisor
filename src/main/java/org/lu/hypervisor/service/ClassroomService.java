@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class ClassroomService {
     private ClassroomRepo classroomRepo;
@@ -20,10 +22,10 @@ public class ClassroomService {
     }
 
     public void delClassroom(Classroom classroom) {
-        classroomRepo.delete(this.findClassroom(classroom));
+        classroomRepo.delete(this.findClassroom(classroom).get());
     }
 
-    public Classroom findClassroom(Classroom classroom) {
-        return classroomRepo.findOne(Example.of(classroom)).get();
+    public Optional<Classroom> findClassroom(Classroom classroom) {
+        return classroomRepo.findOne(Example.of(classroom));
     }
 }

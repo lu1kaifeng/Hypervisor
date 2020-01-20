@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class CourseService {
     private CourseRepo courseRepo;
@@ -19,11 +21,15 @@ public class CourseService {
         return courseRepo.save(course);
     }
 
-    public Course getCourse(Course course) {
-        return courseRepo.findOne(Example.of(course)).get();
+    public Optional<Course> getCourse(Course course) {
+        return courseRepo.findOne(Example.of(course));
+    }
+
+    public Optional<Course> getCourseById(Long id) {
+        return courseRepo.findById(id);
     }
 
     public void delCourse(Course course) {
-        courseRepo.delete(this.getCourse(course));
+        courseRepo.delete(this.getCourse(course).get());
     }
 }

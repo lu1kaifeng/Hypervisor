@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.util.Objects;
-import java.util.function.Supplier;
+import java.util.Optional;
 
 @Service
 public class SubjectService {
@@ -34,6 +34,10 @@ public class SubjectService {
         this.distanceCalc = distanceCalc;
         this.threshold = Double.parseDouble(Objects.requireNonNull(env.getProperty("distance.threshold")));
         ;
+    }
+
+    public Optional<Subject> getSubject(Long id) {
+        return subjectRepo.findById(id);
     }
 
     public Subject newSubject(Subject subject, Photo photo) throws IOException {
@@ -68,11 +72,6 @@ public class SubjectService {
         if (minDistance > threshold) {
             throw new NoMatchingFaceException();
         }
-        return subjectRepo.findById(minId).orElseThrow(new Supplier<NoMatchingFaceException>() {
-            @Override
-            public NoMatchingFaceException get() {
-                return new NoMatchingFaceException();
-            }
-        });
+        return subjectRepo.findById(minId).orElseThrow(NoMatchingFaceException::new);
     }
 }
