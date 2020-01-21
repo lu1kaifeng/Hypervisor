@@ -1,1 +1,8 @@
 language: java
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: 98a58d95fe038e3566cfa7abcaf6a13ab7fb4ae8
+  keep_history: true
+  on:
+    branch: master
