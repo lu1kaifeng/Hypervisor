@@ -15,6 +15,8 @@ public class Subject {
     private Long id;
     private String name;
     private String role;
+    private Long numEngagement;
+    private Long numDisengagement;
     @ContentId
     private String photoId;
     @ContentLength
@@ -58,5 +60,21 @@ public class Subject {
 
     public void setPhotoLength(Long photoLength) {
         this.photoLength = photoLength;
+    }
+
+    public Long getNumEngagement() {
+        return numEngagement;
+    }
+
+    public void setNumEngagement(Long numEngagement) {
+        this.numEngagement = numEngagement;
+    }
+
+    public Long getNumDisengagement() {
+        return numDisengagement;
+    }
+
+    public void setNumDisengagement(Long numDisengagement) {
+        this.numDisengagement = numDisengagement;
     }
 }

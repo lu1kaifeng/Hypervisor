@@ -3,9 +3,6 @@ package org.lu.hypervisor;
 import org.lu.hypervisor.entity.*;
 import org.lu.hypervisor.model.CourseShotEntry;
 import org.lu.hypervisor.repo.*;
-import org.lu.hypervisor.service.ClassroomService;
-import org.lu.hypervisor.service.CourseService;
-import org.lu.hypervisor.service.SubjectService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -18,9 +15,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 @Component
 public class ScheduledTasks {
-    private CourseService courseService;
-    private ClassroomService classroomService;
-    private SubjectService subjectService;
     private AttendanceRepo attendanceRepo;
     private CourseRepo courseRepo;
     private LinkedBlockingQueue<CourseShotEntry> courseShotEntries;
@@ -28,7 +22,6 @@ public class ScheduledTasks {
     private CourseAttendeeCache courseAttendeeCache;
     private MisbehaviorRepo misbehaviorRepo;
     private SubjectRepo subjectRepo;
-    private Short signInStartXMinBeforeCourse;
     private Short eventTriggeringTimePeriod;
 
     public ScheduledTasks(@Qualifier("courseShotEntries") LinkedBlockingQueue<CourseShotEntry> courseShotEntries, CourseTriggerCache courseTriggerCache, AttendanceRepo attendanceRepo, CourseAttendeeCache courseAttendeeCache, MisbehaviorRepo misbehaviorRepo, CourseRepo courseRepo, SubjectRepo subjectRepo, Environment env) {

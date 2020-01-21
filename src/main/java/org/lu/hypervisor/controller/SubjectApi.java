@@ -15,4 +15,7 @@ public interface SubjectApi {
 
     @RequestMapping(method = RequestMethod.GET, value = "/subject")
     ResponseEntity<Subject> getId(@RequestBody String photoBase64);
+
+    @RequestMapping(method = RequestMethod.POST, value = "/subject/signIn")
+    ResponseEntity<Subject> postSignIn(@RequestBody String photoBase64, Long courseId);
 }
