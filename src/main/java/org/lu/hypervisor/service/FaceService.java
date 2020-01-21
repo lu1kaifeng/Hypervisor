@@ -1,6 +1,7 @@
 package org.lu.hypervisor.service;
 
 import org.apache.commons.math3.ml.distance.DistanceMeasure;
+import org.lu.hypervisor.client.EngagementRecognitionClient;
 import org.lu.hypervisor.client.FaceNetClient;
 import org.lu.hypervisor.model.FacePair;
 import org.lu.hypervisor.model.Photo;
@@ -9,21 +10,36 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class FaceService {
-    private FaceNetClient client;
+    private EngagementRecognitionClient engagementRecognitionClient;
+    private FaceNetClient faceNetClient;
     private DistanceMeasure distanceCalc;
 
     @Autowired
-    public FaceService(FaceNetClient client, DistanceMeasure distanceMeasure) {
-        this.client = client;
+    public FaceService(FaceNetClient faceNetClient, DistanceMeasure distanceMeasure, EngagementRecognitionClient engagementRecognitionClient) {
+        this.faceNetClient = faceNetClient;
         this.distanceCalc = distanceMeasure;
+        this.engagementRecognitionClient = engagementRecognitionClient;
     }
 
     public String compare(FacePair facePair) {
-        return Double.toString(this.distanceCalc.compute(client.fetchFaceVector(facePair.getFace1Base64()),
-                client.fetchFaceVector(facePair.getFace2Base64())));
+        return Double.toString(this.distanceCalc.compute(faceNetClient.fetchFaceVector(facePair.getFace1Base64()),
+                faceNetClient.fetchFaceVector(facePair.getFace2Base64())));
+    }
+
+    public String[] faceExtraction(boolean isMonochrome, String srcPic) {
+        if (isMonochrome) {
+            return this.faceNetClient.facesExtractionMono(srcPic);
+        } else {
+            return this.faceNetClient.facesExtractionRGB(srcPic);
+        }
+    }
+
+    public boolean isEngaged(String srcFace) {
+        double[] result = engagementRecognitionClient.engagementPrediction(srcFace);
+        return !(result[0] > result[1]);
     }
 
     public double[] computeVector(Photo photo) {
-        return client.fetchFaceVector(photo.getPhotoBase64());
+        return faceNetClient.fetchFaceVector(photo.getPhotoBase64());
     }
 }

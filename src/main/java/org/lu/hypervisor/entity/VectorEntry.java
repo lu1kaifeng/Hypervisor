@@ -1,4 +1,4 @@
-package org.lu.hypervisor.model;
+package org.lu.hypervisor.entity;
 
 import org.springframework.data.redis.core.RedisHash;
 

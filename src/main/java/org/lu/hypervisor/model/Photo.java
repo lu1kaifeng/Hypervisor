@@ -1,5 +1,7 @@
 package org.lu.hypervisor.model;
 
+import org.lu.hypervisor.entity.VectorEntry;
+
 import java.io.Serializable;
 
 public class Photo implements Serializable {
