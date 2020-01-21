@@ -37,7 +37,12 @@ public class ScheduledTasks {
 
     @Scheduled(fixedDelayString = "${engagement.detection.interval.inMilli}")
     public void courseShotProcessing() {
-
+        for (CourseShotEntry courseShotEntry = courseShotEntries.poll(); courseShotEntry != null; courseShotEntry = courseShotEntries.poll()) {
+            if (courseShotEntry.isEngaged())
+                courseShotEntry.getTarget().setNumEngagement(courseShotEntry.getTarget().getNumEngagement() + 1);
+            else
+                courseShotEntry.getTarget().setNumDisengagement(courseShotEntry.getTarget().getNumDisengagement() + 1);
+        }
     }
 
     @Scheduled(fixedDelayString = "${course.event.interval.inMilli}")

@@ -47,4 +47,10 @@ public class SubjectApiController implements SubjectApi {
         if (subject == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(subject, HttpStatus.OK);
     }
+
+    @Override
+    public ResponseEntity<Void> postEngagement(String photoBase64) {
+        subjectService.studentEngagement(photoBase64);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
