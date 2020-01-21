@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,5 +28,9 @@ public class ClassroomService {
 
     public Optional<Classroom> findClassroom(Classroom classroom) {
         return classroomRepo.findOne(Example.of(classroom));
+    }
+
+    public List<Classroom> findAll() {
+        return classroomRepo.findAll();
     }
 }

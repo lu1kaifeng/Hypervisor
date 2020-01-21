@@ -8,17 +8,21 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
+import java.util.List;
 
 public interface SubjectApi {
     @RequestMapping(method = RequestMethod.POST, value = "/subject")
     ResponseEntity<Void> postSubject(@RequestParam("name") String name, @RequestParam("role") String role, @RequestBody String photoBase64) throws IOException;
 
     @RequestMapping(method = RequestMethod.GET, value = "/subject")
-    ResponseEntity<Subject> getId(@RequestBody String photoBase64);
+    ResponseEntity<Subject> getSubject(@RequestBody String photoBase64);
 
     @RequestMapping(method = RequestMethod.POST, value = "/subject/signIn")
     ResponseEntity<Subject> postSignIn(@RequestBody String photoBase64, Long courseId);
 
     @RequestMapping(method = RequestMethod.POST, value = "/subject/engagement")
     ResponseEntity<Void> postEngagement(@RequestBody String photoBase64);
+
+    @RequestMapping(method = RequestMethod.GET, value = "/subject/all")
+    ResponseEntity<List<Subject>> getAllSubject();
 }

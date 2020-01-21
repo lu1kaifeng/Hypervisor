@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -31,5 +32,9 @@ public class CourseService {
 
     public void delCourse(Course course) {
         courseRepo.delete(this.getCourse(course).get());
+    }
+
+    public List<Course> findAll() {
+        return courseRepo.findAll();
     }
 }

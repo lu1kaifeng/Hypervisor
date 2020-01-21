@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -124,5 +125,9 @@ public class SubjectService {
         }
         courseAttendeeCache.save(courseAttendee);
         return subject;
+    }
+
+    public List<Subject> findAll() {
+        return subjectRepo.findAll();
     }
 }

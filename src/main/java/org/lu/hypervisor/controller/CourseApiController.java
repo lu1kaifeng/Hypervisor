@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalTime;
+import java.util.List;
 
 @Controller
 public class CourseApiController implements CourseApi {
@@ -98,5 +99,10 @@ public class CourseApiController implements CourseApi {
         if (!courseService.getCourseById(courseId).isPresent()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         attendanceService.leaveCourse(subjectService.getSubject(studentId).get(), courseService.getCourseById(courseId).get());
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<List<Course>> getAllCourse() {
+        return new ResponseEntity<>(courseService.findAll(), HttpStatus.OK);
     }
 }

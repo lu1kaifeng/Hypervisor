@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
+import java.util.List;
 
 @Controller
 public class SubjectApiController implements SubjectApi {
@@ -34,7 +35,7 @@ public class SubjectApiController implements SubjectApi {
     }
 
     @Override
-    public ResponseEntity<Subject> getId(String photoBase64) {
+    public ResponseEntity<Subject> getSubject(String photoBase64) {
         Photo photo = new Photo();
         photo.setPhotoBase64(photoBase64);
         return new ResponseEntity<>(subjectService.identify(photo), HttpStatus.OK);
@@ -52,5 +53,10 @@ public class SubjectApiController implements SubjectApi {
     public ResponseEntity<Void> postEngagement(String photoBase64) {
         subjectService.studentEngagement(photoBase64);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<List<Subject>> getAllSubject() {
+        return new ResponseEntity<>(subjectService.findAll(), HttpStatus.OK);
     }
 }

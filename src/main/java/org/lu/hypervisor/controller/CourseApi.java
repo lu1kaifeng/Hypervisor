@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 public interface CourseApi {
     @RequestMapping(method = RequestMethod.POST, value = "/course")
     ResponseEntity<Void> postCourse(@RequestParam String name, @RequestParam Long teacherId, @RequestParam String classroom, @RequestParam Short weekday, @RequestParam Short timeHr, @RequestParam Short timeMin, @RequestParam Short durationHr);
@@ -22,4 +24,7 @@ public interface CourseApi {
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/course/attendance")
     ResponseEntity<Void> leaveCourse(@RequestParam Long studentId, @RequestParam Long courseId);
+
+    @RequestMapping(method = RequestMethod.GET, value = "/course/all")
+    ResponseEntity<List<Course>> getAllCourse();
 }
