@@ -11,6 +11,7 @@ import org.lu.hypervisor.repo.SubjectStore;
 import org.lu.hypervisor.repo.VectorCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +38,7 @@ public class SubjectService {
     private Short lateArrivalThreshold;
 
     @Autowired
-    public SubjectService(SubjectRepo subjectRepo, SubjectStore subjectStore, VectorCache vectorCache, FaceService faceService, DistanceMeasure distanceCalc, @Qualifier("courseShotEntries") LinkedBlockingQueue<CourseShotEntry> courseShotEntries, CourseAttendeeCache courseAttendeeCache, CourseService courseService, MisbehaviorService misbehaviorService, Environment env) {
+    public SubjectService(SubjectRepo subjectRepo, SubjectStore subjectStore, VectorCache vectorCache, FaceService faceService, DistanceMeasure distanceCalc, @Qualifier("courseShotEntries") LinkedBlockingQueue<CourseShotEntry> courseShotEntries, CourseAttendeeCache courseAttendeeCache, CourseService courseService, @Lazy MisbehaviorService misbehaviorService, Environment env) {
         this.subjectRepo = subjectRepo;
         this.subjectStore = subjectStore;
         this.vectorCache = vectorCache;
