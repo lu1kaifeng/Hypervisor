@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Objects;
 import java.util.concurrent.LinkedBlockingQueue;
 
 @Component
@@ -28,6 +29,7 @@ public class ScheduledTasks {
     private MisbehaviorRepo misbehaviorRepo;
     private SubjectRepo subjectRepo;
     private Short signInStartXMinBeforeCourse;
+    private Short eventTriggeringTimePeriod;
 
     public ScheduledTasks(@Qualifier("courseShotEntries") LinkedBlockingQueue<CourseShotEntry> courseShotEntries, CourseTriggerCache courseTriggerCache, AttendanceRepo attendanceRepo, CourseAttendeeCache courseAttendeeCache, MisbehaviorRepo misbehaviorRepo, CourseRepo courseRepo, SubjectRepo subjectRepo, Environment env) {
         this.courseShotEntries = courseShotEntries;
@@ -37,6 +39,7 @@ public class ScheduledTasks {
         this.misbehaviorRepo = misbehaviorRepo;
         this.courseRepo = courseRepo;
         this.subjectRepo = subjectRepo;
+        this.eventTriggeringTimePeriod = Short.parseShort(Objects.requireNonNull(env.getProperty("event.time.period.inMinutes")));
     }
 
     @Scheduled(fixedDelayString = "${engagement.detection.interval.inMilli}")
@@ -48,7 +51,7 @@ public class ScheduledTasks {
     public void courseEventInvoker() {
         Iterable<CourseTrigger> courseTriggers = courseTriggerCache.findAll();
         for (CourseTrigger courseTrigger : courseTriggers) {
-            if (courseTrigger.getStartTime().minusMinutes(5).isBefore(LocalTime.now()) && courseTrigger.getStartTime().isAfter(LocalTime.now()) && !courseTrigger.getCreated() && courseTrigger.getDestroyed()) {
+            if (courseTrigger.getStartTime().minusMinutes(eventTriggeringTimePeriod).isBefore(LocalTime.now()) && courseTrigger.getStartTime().isAfter(LocalTime.now()) && !courseTrigger.getCreated() && courseTrigger.getDestroyed()) {
                 for (Attendance attendance : attendanceRepo.findAll()) {
                     CourseAttendee courseAttendee = new CourseAttendee();
                     courseAttendee.setId(attendance.getId());
@@ -59,7 +62,7 @@ public class ScheduledTasks {
                 courseTrigger.setDestroyed(false);
                 courseTriggerCache.save(courseTrigger);
             }
-            if (courseTrigger.getStartTime().plusHours(courseTrigger.getDuration().toHours()).minusMinutes(5).isBefore(LocalTime.now()) && courseTrigger.getStartTime().plusHours(courseTrigger.getDuration().toHours()).isAfter(LocalTime.now()) && courseTrigger.getCreated() && !courseTrigger.getDestroyed()) {
+            if (courseTrigger.getStartTime().plusHours(courseTrigger.getDuration().toHours()).minusMinutes(eventTriggeringTimePeriod).isBefore(LocalTime.now()) && courseTrigger.getStartTime().plusHours(courseTrigger.getDuration().toHours()).isAfter(LocalTime.now()) && courseTrigger.getCreated() && !courseTrigger.getDestroyed()) {
                 for (CourseAttendee courseAttendee : courseAttendeeCache.findAll()) {
                     if (courseTrigger.getId().equals(courseAttendee.getCourseId())) {
                         if (!courseAttendee.getPresent()) {
