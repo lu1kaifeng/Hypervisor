@@ -2,10 +2,9 @@ package org.lu.hypervisor.controller;
 
 import org.lu.hypervisor.entity.Classroom;
 import org.lu.hypervisor.entity.Course;
-import org.lu.hypervisor.service.AttendanceService;
-import org.lu.hypervisor.service.ClassroomService;
-import org.lu.hypervisor.service.CourseService;
-import org.lu.hypervisor.service.SubjectService;
+import org.lu.hypervisor.entity.Subject;
+import org.lu.hypervisor.exception.NotAuthorizedException;
+import org.lu.hypervisor.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,21 +21,24 @@ public class CourseApiController implements CourseApi {
     private SubjectService subjectService;
     private ClassroomService classroomService;
     private AttendanceService attendanceService;
+    private SecurityService securityService;
 
     @Autowired
-    public CourseApiController(CourseService courseService, SubjectService subjectService, ClassroomService classroomService, AttendanceService attendanceService) {
+    public CourseApiController(CourseService courseService, SubjectService subjectService, ClassroomService classroomService, AttendanceService attendanceService, SecurityService securityService) {
         this.courseService = courseService;
         this.subjectService = subjectService;
         this.classroomService = classroomService;
         this.attendanceService = attendanceService;
+        this.securityService = securityService;
     }
 
     @Override
-    public ResponseEntity<Void> postCourse(String name, Long teacherId, String classroom, Short weekday, Short timeHr, Short timeMin, Short durationHr) {
+    public ResponseEntity<Void> postCourse(String x_api_key, String name, Long teacherId, String classroom, Short weekday, Short timeHr, Short timeMin, Short durationHr) throws NotAuthorizedException {
+        securityService.tokenVerify(x_api_key);
         Course course = new Course();
         course.setName(name);
-        if (!subjectService.getSubject(teacherId).isPresent()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        course.setTeacher(subjectService.getSubject(teacherId).get());
+        if (!subjectService.getSubjectById(teacherId).isPresent()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        course.setTeacher(subjectService.getSubjectById(teacherId).get());
         Classroom classroomSearch = new Classroom();
         classroomSearch.setIdentifier(classroom);
         if (!classroomService.findClassroom(classroomSearch).isPresent())
@@ -50,7 +52,8 @@ public class CourseApiController implements CourseApi {
     }
 
     @Override
-    public ResponseEntity<Void> delCourse(Long id) {
+    public ResponseEntity<Void> delCourse(String x_api_key, Long id) throws NotAuthorizedException {
+        securityService.tokenVerify(x_api_key);
         Course courseSearch = new Course();
         courseSearch.setId(id);
         if (!courseService.getCourse(courseSearch).isPresent()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -59,14 +62,16 @@ public class CourseApiController implements CourseApi {
     }
 
     @Override
-    public ResponseEntity<Course> getCourse(String name, Long teacherId, String classroom, Short weekday, Short timeHr, Short timeMin) {
+    public ResponseEntity<Course> getCourse(String x_api_key, String name, Long teacherId, String classroom, Short weekday, Short timeHr, Short timeMin) throws NotAuthorizedException {
+        securityService.tokenVerify(x_api_key);
         Course courseSearch = new Course();
         if (name != null) {
             courseSearch.setName(name);
         }
         if (teacherId != null) {
-            if (!subjectService.getSubject(teacherId).isPresent()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            courseSearch.setTeacher(subjectService.getSubject(teacherId).get());
+            if (!subjectService.getSubjectById(teacherId).isPresent())
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            courseSearch.setTeacher(subjectService.getSubjectById(teacherId).get());
         }
         if (classroom != null) {
             Classroom classroomSearch = new Classroom();
@@ -86,23 +91,24 @@ public class CourseApiController implements CourseApi {
     }
 
     @Override
-    public ResponseEntity<Void> attendCourse(Long studentId, Long courseId) {
-        if (!subjectService.getSubject(studentId).isPresent()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<Void> attendCourse(String x_api_key, Long courseId) throws NotAuthorizedException {
+        Subject subject = securityService.tokenVerify(x_api_key);
         if (!courseService.getCourseById(courseId).isPresent()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        attendanceService.attendCourse(subjectService.getSubject(studentId).get(), courseService.getCourseById(courseId).get());
+        attendanceService.attendCourse(subject, courseService.getCourseById(courseId).get());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Void> leaveCourse(Long studentId, Long courseId) {
-        if (!subjectService.getSubject(studentId).isPresent()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<Void> leaveCourse(String x_api_key, Long courseId) throws NotAuthorizedException {
+        Subject subject = securityService.tokenVerify(x_api_key);
         if (!courseService.getCourseById(courseId).isPresent()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        attendanceService.leaveCourse(subjectService.getSubject(studentId).get(), courseService.getCourseById(courseId).get());
+        attendanceService.leaveCourse(subject, courseService.getCourseById(courseId).get());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<List<Course>> getAllCourse() {
+    public ResponseEntity<List<Course>> getAllCourse(String x_api_key) throws NotAuthorizedException {
+        securityService.tokenVerify(x_api_key);
         return new ResponseEntity<>(courseService.findAll(), HttpStatus.OK);
     }
 }

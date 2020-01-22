@@ -1,8 +1,10 @@
 package org.lu.hypervisor.controller;
 
 import org.lu.hypervisor.entity.Subject;
+import org.lu.hypervisor.exception.NotAuthorizedException;
 import org.lu.hypervisor.model.Photo;
 import org.lu.hypervisor.service.CourseService;
+import org.lu.hypervisor.service.SecurityService;
 import org.lu.hypervisor.service.SubjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,11 +18,13 @@ import java.util.List;
 public class SubjectApiController implements SubjectApi {
     private SubjectService subjectService;
     private CourseService courseService;
+    private SecurityService securityService;
 
     @Autowired
-    public SubjectApiController(SubjectService subjectService, CourseService courseService) {
+    public SubjectApiController(SubjectService subjectService, CourseService courseService, SecurityService securityService) {
         this.subjectService = subjectService;
         this.courseService = courseService;
+        this.securityService = securityService;
     }
 
     @Override
@@ -56,7 +60,17 @@ public class SubjectApiController implements SubjectApi {
     }
 
     @Override
-    public ResponseEntity<List<Subject>> getAllSubject() {
+    public ResponseEntity<List<Subject>> getAllSubject(String x_api_key) throws NotAuthorizedException {
+        securityService.tokenVerify(x_api_key);
         return new ResponseEntity<>(subjectService.findAll(), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<String> getLogin(String name, String password) throws NotAuthorizedException {
+        Subject subject = new Subject();
+        subject.setName(name);
+        subject.setPassword(password);
+        if (!subjectService.getSubject(subject).isPresent()) throw new NotAuthorizedException();
+        return new ResponseEntity<>(securityService.tokenCreate(subjectService.getSubject(subject).get()), HttpStatus.OK);
     }
 }

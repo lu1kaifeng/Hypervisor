@@ -15,6 +15,7 @@ public class Subject {
     private Long id;
     private String name;
     private String role;
+    private String password;
     private Long numEngagement;
     private Long numDisengagement;
     @ContentId
@@ -76,5 +77,13 @@ public class Subject {
 
     public void setNumDisengagement(Long numDisengagement) {
         this.numDisengagement = numDisengagement;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

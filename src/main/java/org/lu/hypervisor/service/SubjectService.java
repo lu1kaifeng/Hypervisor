@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.env.Environment;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -52,8 +53,12 @@ public class SubjectService {
         this.misbehaviorService = misbehaviorService;
     }
 
-    public Optional<Subject> getSubject(Long id) {
+    public Optional<Subject> getSubjectById(Long id) {
         return subjectRepo.findById(id);
+    }
+
+    public Optional<Subject> getSubject(Subject subject) {
+        return subjectRepo.findOne(Example.of(subject));
     }
 
     public Subject newSubject(Subject subject, Photo photo) throws IOException {

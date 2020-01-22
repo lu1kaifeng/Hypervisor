@@ -25,8 +25,8 @@ public class MisbehaviorService {
     }
 
     public Misbehavior getMisbehavior(Long subjectId) {
-        if (!subjectService.getSubject(subjectId).isPresent()) return null;
-        Subject subject = subjectService.getSubject(subjectId).get();
+        if (!subjectService.getSubjectById(subjectId).isPresent()) return null;
+        Subject subject = subjectService.getSubjectById(subjectId).get();
         Misbehavior misbehavior = new Misbehavior();
         misbehavior.setSubject(subject);
         if (!misbehaviorRepo.findOne(Example.of(misbehavior)).isPresent()) {
