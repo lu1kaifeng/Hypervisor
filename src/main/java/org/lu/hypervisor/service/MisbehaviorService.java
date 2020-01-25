@@ -24,15 +24,12 @@ public class MisbehaviorService {
         return misbehaviorRepo.save(misbehavior);
     }
 
-    public Misbehavior getMisbehavior(Long subjectId) {
+    public List<Misbehavior> getMisbehavior(Long subjectId) {
         if (!subjectService.getSubjectById(subjectId).isPresent()) return null;
         Subject subject = subjectService.getSubjectById(subjectId).get();
         Misbehavior misbehavior = new Misbehavior();
         misbehavior.setSubject(subject);
-        if (!misbehaviorRepo.findOne(Example.of(misbehavior)).isPresent()) {
-            return null;
-        }
-        return misbehaviorRepo.findOne(Example.of(misbehavior)).get();
+        return misbehaviorRepo.findAll(Example.of(misbehavior));
     }
 
     public List<Misbehavior> getAll() {

@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AttendanceService {
     private AttendanceRepo attendanceRepo;
@@ -33,5 +35,11 @@ public class AttendanceService {
         attendance.setAttendee(student);
         attendance.setCourse(course);
         attendanceRepo.delete(attendanceRepo.findOne(Example.of(attendance)).get());
+    }
+
+    public List<Attendance> getAttendance(Subject subject) {
+        Attendance attendance = new Attendance();
+        attendance.setAttendee(subject);
+        return attendanceRepo.findAll(Example.of(attendance));
     }
 }

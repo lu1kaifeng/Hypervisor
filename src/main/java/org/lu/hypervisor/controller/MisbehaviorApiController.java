@@ -23,10 +23,11 @@ public class MisbehaviorApiController implements MisbehaviorApi {
     }
 
     @Override
-    public ResponseEntity<Misbehavior> getMisbehavior(String x_api_key, Long subjectId) throws NotAuthorizedException {
+    public ResponseEntity<List<Misbehavior>> getMisbehavior(String x_api_key, Long subjectId) throws NotAuthorizedException {
         securityService.tokenVerify(x_api_key);
-        if (misbehaviorService.getMisbehavior(subjectId) != null) {
-            return new ResponseEntity<>(misbehaviorService.getMisbehavior(subjectId), HttpStatus.OK);
+        List<Misbehavior> misbehaviors = misbehaviorService.getMisbehavior(subjectId);
+        if (!misbehaviors.isEmpty()) {
+            return new ResponseEntity<>(misbehaviors, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }

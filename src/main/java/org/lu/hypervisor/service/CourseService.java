@@ -22,8 +22,8 @@ public class CourseService {
         return courseRepo.save(course);
     }
 
-    public Optional<Course> getCourse(Course course) {
-        return courseRepo.findOne(Example.of(course));
+    public List<Course> getCourse(Course course) {
+        return courseRepo.findAll(Example.of(course));
     }
 
     public Optional<Course> getCourseById(Long id) {
@@ -31,7 +31,7 @@ public class CourseService {
     }
 
     public void delCourse(Course course) {
-        courseRepo.delete(this.getCourse(course).get());
+        courseRepo.delete(this.getCourse(course).get(0));
     }
 
     public List<Course> findAll() {

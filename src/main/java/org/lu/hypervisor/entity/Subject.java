@@ -16,8 +16,8 @@ public class Subject {
     private String name;
     private String role;
     private String password;
-    private Long numEngagement;
-    private Long numDisengagement;
+    private Long numEngagement = 0L;
+    private Long numDisengagement = 0L;
     @ContentId
     private String photoId;
     @ContentLength

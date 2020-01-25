@@ -133,6 +133,11 @@ public class SubjectService {
         return subject;
     }
 
+    public Photo getPhoto(Subject subject) throws IOException, ClassNotFoundException {
+        ObjectInputStream ois = new ObjectInputStream(subjectStore.getContent(subject));
+        return (Photo) ois.readObject();
+    }
+
     public List<Subject> findAll() {
         return subjectRepo.findAll();
     }

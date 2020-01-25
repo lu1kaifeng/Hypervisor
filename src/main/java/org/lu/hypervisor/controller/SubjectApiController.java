@@ -73,4 +73,14 @@ public class SubjectApiController implements SubjectApi {
         if (!subjectService.getSubject(subject).isPresent()) throw new NotAuthorizedException();
         return new ResponseEntity<>(securityService.tokenCreate(subjectService.getSubject(subject).get()), HttpStatus.OK);
     }
+
+    @Override
+    public ResponseEntity<Subject> getSubjectInfo(String apiKey) throws NotAuthorizedException {
+        return new ResponseEntity<>(securityService.tokenVerify(apiKey), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Photo> getSubjectPhoto(String apiKey) throws NotAuthorizedException, IOException, ClassNotFoundException {
+        return new ResponseEntity<>(subjectService.getPhoto(securityService.tokenVerify(apiKey)), HttpStatus.OK);
+    }
 }

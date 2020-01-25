@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface MisbehaviorApi {
     @RequestMapping(method = RequestMethod.GET, value = "/misbehavior")
-    ResponseEntity<Misbehavior> getMisbehavior(@RequestHeader("x-api-key") String x_api_key, @RequestParam Long SubjectId) throws NotAuthorizedException;
+    ResponseEntity<List<Misbehavior>> getMisbehavior(@RequestHeader("x-api-key") String x_api_key, @RequestParam Long SubjectId) throws NotAuthorizedException;
 
     @RequestMapping(method = RequestMethod.GET, value = "/misbehavior/all")
     ResponseEntity<List<Misbehavior>> getAllMisbehavior(@RequestHeader("x-api-key") String x_api_key) throws NotAuthorizedException;

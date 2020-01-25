@@ -2,6 +2,7 @@ package org.lu.hypervisor.controller;
 
 import org.lu.hypervisor.entity.Subject;
 import org.lu.hypervisor.exception.NotAuthorizedException;
+import org.lu.hypervisor.model.Photo;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,4 +27,10 @@ public interface SubjectApi {
 
     @RequestMapping(method = RequestMethod.GET, value = "/subject/logIn")
     ResponseEntity<String> getLogin(@RequestParam String name, @RequestParam String password) throws NotAuthorizedException;
+
+    @RequestMapping(method = RequestMethod.GET, value = "/subject/info")
+    ResponseEntity<Subject> getSubjectInfo(@RequestHeader("x-api-key") String apiKey) throws NotAuthorizedException;
+
+    @RequestMapping(method = RequestMethod.GET, value = "/subject/photo")
+    ResponseEntity<Photo> getSubjectPhoto(@RequestHeader("x-api-key") String apiKey) throws NotAuthorizedException, IOException, ClassNotFoundException;
 }
