@@ -33,4 +33,7 @@ public interface SubjectApi {
 
     @RequestMapping(method = RequestMethod.GET, value = "/subject/photo")
     ResponseEntity<Photo> getSubjectPhoto(@RequestHeader("x-api-key") String apiKey) throws NotAuthorizedException, IOException, ClassNotFoundException;
+
+    @RequestMapping(method = RequestMethod.GET, value = "/subject/{id}/photo")
+    ResponseEntity<Photo> getSubjectPhotoById(@RequestHeader("x-api-key") String apiKey, @PathVariable("id") Long subjectId) throws NotAuthorizedException, IOException, ClassNotFoundException;
 }
