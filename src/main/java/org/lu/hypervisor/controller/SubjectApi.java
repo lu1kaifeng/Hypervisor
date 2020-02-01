@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface SubjectApi {
     @RequestMapping(method = RequestMethod.POST, value = "/subject")
-    ResponseEntity<Void> postSubject(@RequestParam("name") String name, @RequestParam("role") String role, @RequestBody String photoBase64) throws IOException;
+    ResponseEntity<Void> postSubject(@RequestParam("name") String name,@RequestParam("password") String password, @RequestParam("role") String role, @RequestBody String photoBase64) throws IOException;
 
     @RequestMapping(method = RequestMethod.GET, value = "/subject")
     ResponseEntity<Subject> getSubject(@RequestBody String photoBase64);

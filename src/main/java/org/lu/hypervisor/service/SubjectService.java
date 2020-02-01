@@ -63,6 +63,8 @@ public class SubjectService {
 
     public Subject newSubject(Subject subject, Photo photo) throws IOException {
         photo.setFaceVec(faceService.computeVector(photo));
+        subject.setNumEngagement(0L);
+        subject.setNumDisengagement(0L);
         subject = subjectRepo.save(subject);
         photo.setId(subject.getId());
         ByteArrayOutputStream baos = new ByteArrayOutputStream();

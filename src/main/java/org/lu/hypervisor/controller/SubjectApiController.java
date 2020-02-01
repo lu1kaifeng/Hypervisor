@@ -28,11 +28,12 @@ public class SubjectApiController implements SubjectApi {
     }
 
     @Override
-    public ResponseEntity<Void> postSubject(String name, String role, String photoBase64) throws IOException {
+    public ResponseEntity<Void> postSubject(String name, String password, String role, String photoBase64) throws IOException {
         Subject subject = new Subject();
         Photo photo = new Photo();
         subject.setName(name);
         subject.setRole(role);
+        subject.setPassword(password);
         photo.setPhotoBase64(photoBase64);
         this.subjectService.newSubject(subject, photo);
         return new ResponseEntity<>(HttpStatus.OK);
