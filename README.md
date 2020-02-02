@@ -1,10 +1,10 @@
 
 ## Hypervisor
-![Project_Logo](https://github.com/HENU-Shabi/Hypervisor/blob/master/readme_pic.png)
-
-*A university management system based on facial recognition and student engagement recognition  using deep learning.*
-
-**This project is built for CCCC 2020.**
+<p align="center">
+<img width="300" height="300" src="https://github.com/HENU-Shabi/Hypervisor/blob/master/readme_pic.png" alt="Logo"/>
+</p>
+<p align="center">A university management system based on facial recognition and student engagement recognition  using deep learning.</p>
+<p align="center"><strong>This project is built for CCCC 2020.</strong></p>
 
  two neural network backend is needed,they are:
  
