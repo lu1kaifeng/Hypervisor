@@ -6,7 +6,7 @@
 <p align="center">A university management system based on facial recognition and student engagement recognition  using deep learning.</p>
 <p align="center"><strong>This project is built for CCCC 2020.</strong></p>
 
- two neural network backend is needed,they are:
+ two neural network backends are needed,they are:
  
 
  - [OpenFace docker image with customized API](https://hub.docker.com/repository/docker/lu1kaifeng/luopenface)
