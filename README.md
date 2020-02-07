@@ -9,8 +9,12 @@
  two neural network backends are needed,they are:
  
 
- - [OpenFace docker image with customized API](https://hub.docker.com/repository/docker/lu1kaifeng/luopenface)
- - [docker image of the student engagement recognition NN with customized API](https://hub.docker.com/repository/docker/lu1kaifeng/luengagement)
+ - [OpenFace docker image with customized API](https://hub.docker.com/repository/docker/lu1kaifeng/openface-final)
+ - [docker image of the student engagement recognition NN with customized API](https://hub.docker.com/repository/docker/lu1kaifeng/engagement-recognition-final)
+ 
+ Associated projects:
+ - [OpenFace](http://cmusatyalab.github.io/openface/)
+ - [Automatic Recognition of Student Engagement using Deep Learning and Facial Expression](https://github.com/omidmnezami/Engagement-Recognition)
 
  Redis and MySQL as well as [MinIO](https://min.io/)(object storage compatible with Amazon S3) is needed
 
@@ -19,7 +23,7 @@ please modify the application.properties accordingly:
 ```yaml
 faceNet.url=##OpenFace docker API url
 
-engagement.url=##student engagement N docker API url
+engagement.url=##student engagement NN docker API url
 
 server.port=2233
 
