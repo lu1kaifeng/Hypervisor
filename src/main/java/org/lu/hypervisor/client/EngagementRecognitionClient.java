@@ -6,6 +6,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient(name = "engagement", url = "${engagement.url}")
 public interface EngagementRecognitionClient {
-    @PostMapping(value = "/faceNet")
+    @PostMapping(value = "/engagement")
     double[] engagementPrediction(@RequestBody String inputBase64);
 }
