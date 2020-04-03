@@ -1,10 +1,8 @@
 package org.lu.hypervisor.controller;
 
-import org.lu.hypervisor.entity.Attendance;
-import org.lu.hypervisor.entity.Classroom;
-import org.lu.hypervisor.entity.Course;
-import org.lu.hypervisor.entity.Subject;
+import org.lu.hypervisor.entity.*;
 import org.lu.hypervisor.exception.NotAuthorizedException;
+import org.lu.hypervisor.exception.NotFoundException;
 import org.lu.hypervisor.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,14 +21,16 @@ public class CourseApiController implements CourseApi {
     private ClassroomService classroomService;
     private AttendanceService attendanceService;
     private SecurityService securityService;
+    private VideoService videoService;
 
     @Autowired
-    public CourseApiController(CourseService courseService, SubjectService subjectService, ClassroomService classroomService, AttendanceService attendanceService, SecurityService securityService) {
+    public CourseApiController(CourseService courseService, SubjectService subjectService, ClassroomService classroomService, AttendanceService attendanceService, SecurityService securityService, VideoService videoService) {
         this.courseService = courseService;
         this.subjectService = subjectService;
         this.classroomService = classroomService;
         this.attendanceService = attendanceService;
         this.securityService = securityService;
+        this.videoService = videoService;
     }
 
     @Override
@@ -119,5 +119,19 @@ public class CourseApiController implements CourseApi {
     public ResponseEntity<List<Course>> getAllCourse(String x_api_key) throws NotAuthorizedException {
         securityService.tokenVerify(x_api_key);
         return new ResponseEntity<>(courseService.findAll(), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<String> postVideo(String x_api_key, Long courseId, String title) throws NotAuthorizedException, NotFoundException {
+        securityService.tokenVerify(x_api_key);
+        Video video = new Video();
+        video.setTitle(title);
+        return ResponseEntity.ok(this.videoService.save(courseService.getCourseById(courseId).orElseThrow(NotFoundException::new),video));
+    }
+
+    @Override
+    public ResponseEntity<List<Video>> getVideo(String x_api_key, Long courseId) throws NotAuthorizedException, NotFoundException {
+        securityService.tokenVerify(x_api_key);
+        return ResponseEntity.ok(courseService.getCourseById(courseId).orElseThrow(NotFoundException::new).getCourseVideo());
     }
 }

@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalTime;
+import java.util.List;
 
 @Entity
 public class Course {
@@ -18,6 +19,8 @@ public class Course {
     private DayOfWeek day;
     private LocalTime time;
     private Duration duration;
+    @OneToMany
+    private List<Video> courseVideo;
 
     public Long getId() {
         return id;
@@ -73,5 +76,13 @@ public class Course {
 
     public void setClassroom(Classroom classroom) {
         this.classroom = classroom;
+    }
+
+    public List<Video> getCourseVideo() {
+        return courseVideo;
+    }
+
+    public void setCourseVideo(List<Video> courseVideo) {
+        this.courseVideo = courseVideo;
     }
 }
